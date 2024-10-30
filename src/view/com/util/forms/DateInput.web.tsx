@@ -1,9 +1,9 @@
-import React, {useCallback, useState} from 'react'
-import {StyleProp, StyleSheet, TextStyle, View, ViewStyle} from 'react-native'
-// @ts-ignore types not available -prf
-import {unstable_createElement} from 'react-native-web'
+import React, {useCallback,useState} from 'react'
+import {StyleProp, TextStyle, View, ViewStyle, unstable_createElement} from 'react-native-web'
 
 import {usePalette} from '#/lib/hooks/usePalette'
+import {atoms as a, useTheme} from '#/alf'
+import {useSharedInputStyles} from '#/components/forms/TextField'
 
 interface Props {
   testID?: string
@@ -19,6 +19,9 @@ interface Props {
 }
 
 export function DateInput(props: Props) {
+  const t = useTheme()
+  const inputStyles = useSharedInputStyles()
+  const [isHovered, setIsHovered] = React.useState(false)
   const pal = usePalette('default')
   const [value, setValue] = useState(toDateInputValue(props.value))
 
@@ -34,13 +37,41 @@ export function DateInput(props: Props) {
   )
 
   return (
-    <View style={[pal.borderDark, styles.container]}>
+    <View
+      // ISSUE: component style
+      style={[
+        a.flex_row,
+        t.atoms.bg_contrast_25,
+        {
+          paddingRight: a.p_sm.padding - 2,
+          paddingLeft: a.p_sm.padding - 2,
+          borderWidth: 1,
+          borderRadius: 23,
+          borderColor: 'transparent',
+        },
+        isHovered && inputStyles.chromeHover,
+        //isFocused && inputStyles.chromeFocus
+      ]}
+      // @ts-expect-error web only
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}>
       {unstable_createElement('input', {
         type: 'date',
-        testID: props.testID,
         value,
+        style: [
+          a.flex_1,
+          a.px_sm,
+          a.border_0,
+          t.atoms.text,
+          {
+            marginTop: 10,
+            marginBottom: 10,
+            backgroundColor: 'transparent',
+            resize: 'none',
+          },
+        ],
+        testID: props.testID,
         onChange: (e: any) => onChangeInternal(e.currentTarget.valueAsDate),
-        style: [pal.text, pal.view, pal.border, styles.textInput],
         placeholderTextColor: pal.colors.textLight,
         accessibilityLabel: props.accessibilityLabel,
         accessibilityHint: props.accessibilityHint,
@@ -54,23 +85,3 @@ export function DateInput(props: Props) {
 function toDateInputValue(d: Date): string {
   return d.toISOString().split('T')[0]
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    paddingHorizontal: 4,
-    borderWidth: 1,
-    borderRadius: 10,
-  },
-  textInput: {
-    flex: 1,
-    width: '100%',
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-    fontSize: 17,
-    letterSpacing: 0.25,
-    fontWeight: '400',
-    borderRadius: 10,
-    borderWidth: 0,
-  },
-})
