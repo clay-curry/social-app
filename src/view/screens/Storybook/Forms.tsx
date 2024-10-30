@@ -1,9 +1,11 @@
 import React from 'react'
 import {View} from 'react-native'
 
+import {DateInput2} from '#/view/com/util/forms/DateInput2'
 import {atoms as a} from '#/alf'
 import {Button, ButtonText} from '#/components/Button'
 import {DateField, LabelText} from '#/components/forms/DateField'
+import {DateField2} from '#/components/forms/DateField2'
 import * as TextField from '#/components/forms/TextField'
 import * as Toggle from '#/components/forms/Toggle'
 import * as ToggleButton from '#/components/forms/ToggleButton'
@@ -110,6 +112,41 @@ export function Forms() {
               setDate(date)
             }}
             label="Input"
+          />
+          <DateField2
+            testID="date"
+            value={date}
+            onChangeDate={date => {
+              console.log(date)
+              setDate(date)
+            }}
+            label="Input"
+          />
+          <DateInput2
+            testID="Date"
+            value={new Date(date)}
+            onChange={(date: Date) => {
+              console.log(
+                date
+                  .toLocaleString('us', {
+                    month: 'numeric',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })
+                  .replaceAll('/', '-'),
+              )
+              setDate(
+                date
+                  .toLocaleString('us', {
+                    month: 'numeric',
+                    day: 'numeric',
+                    year: 'numeric',
+                  })
+                  .replaceAll('/', '-'),
+              )
+            }}
+            accessibilityLabel="Birthday"
+            accessibilityHint="Enter your birth date"
           />
         </View>
       </View>
