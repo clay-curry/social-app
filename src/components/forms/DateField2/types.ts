@@ -1,6 +1,6 @@
 export type DateField2Props = {
-  value: string
-  onChangeDate: (date: string) => void
+  value: string | Date
+  onChangeDate: (date: string | Date) => void
   label: string
   isInvalid?: boolean
   testID?: string

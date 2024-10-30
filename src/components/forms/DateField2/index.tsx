@@ -7,12 +7,12 @@ import {useLingui} from '@lingui/react'
 import {atoms as a, useTheme} from '#/alf'
 import {Button, ButtonText} from '#/components/Button'
 import * as Dialog from '#/components/Dialog'
-import {DateField2Props} from '#/components/forms/DateField2/types'
-import {toSimpleDateString} from '#/components/forms/DateField2/utils'
+import {DateFieldProps} from '#/components/forms/DateField/types'
+import {toSimpleDateString} from '#/components/forms/DateField/utils'
 import * as TextField from '#/components/forms/TextField'
-import {DateField2Button} from './index.shared'
+import {DateFieldButton} from './index.shared'
 
-export * as utils from '#/components/forms/DateField2/utils'
+export * as utils from '#/components/forms/DateField/utils'
 export const LabelText = TextField.LabelText
 
 /**
@@ -29,7 +29,7 @@ export function DateField2({
   label,
   isInvalid,
   accessibilityHint,
-}: DateField2Props) {
+}: DateFieldProps) {
   const {_} = useLingui()
   const t = useTheme()
   const control = Dialog.useDialogControl()
@@ -46,7 +46,7 @@ export function DateField2({
 
   return (
     <>
-      <DateField2Button
+      <DateFieldButton
         label={label}
         value={value}
         onPress={() => {

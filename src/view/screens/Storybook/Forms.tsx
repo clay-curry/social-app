@@ -1,7 +1,6 @@
 import React from 'react'
 import {View} from 'react-native'
 
-import {DateInput2} from '#/view/com/util/forms/DateInput2'
 import {atoms as a} from '#/alf'
 import {Button, ButtonText} from '#/components/Button'
 import {DateField, LabelText} from '#/components/forms/DateField'
@@ -19,7 +18,7 @@ export function Forms() {
   const [toggleGroupDValues, setToggleGroupDValues] = React.useState(['warn'])
 
   const [value, setValue] = React.useState('')
-  const [date, setDate] = React.useState('2001-01-01')
+  const [date, setDate] = React.useState(new Date(2001, 0, 1))
 
   return (
     <View style={[a.gap_4xl, a.align_start]}>
@@ -106,48 +105,14 @@ export function Forms() {
           <LabelText>Date</LabelText>
           <DateField
             testID="date"
-            value={date}
-            onChangeDate={date => {
-              console.log(date)
-              setDate(date)
+            value={new Intl.DateTimeFormat('en').format(date)}
+            onChangeDate={datee => {
+              console.log(datee)
+              setDate(new Date(date))
             }}
             label="Input"
           />
-          <DateField2
-            testID="date"
-            value={date}
-            onChangeDate={date => {
-              console.log(date)
-              setDate(date)
-            }}
-            label="Input"
-          />
-          <DateInput2
-            testID="Date"
-            value={new Date(date)}
-            onChange={(date: Date) => {
-              console.log(
-                date
-                  .toLocaleString('us', {
-                    month: 'numeric',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })
-                  .replaceAll('/', '-'),
-              )
-              setDate(
-                date
-                  .toLocaleString('us', {
-                    month: 'numeric',
-                    day: 'numeric',
-                    year: 'numeric',
-                  })
-                  .replaceAll('/', '-'),
-              )
-            }}
-            accessibilityLabel="Birthday"
-            accessibilityHint="Enter your birth date"
-          />
+          <DateField2 value={date} />
         </View>
       </View>
 
